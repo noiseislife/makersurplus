@@ -60,17 +60,19 @@ class MainPage(webapp2.RequestHandler):
         item_query = Item.query(
             ancestor=guestbook_key(guestbook_name)).order(Item.desc)
         items = item_query.fetch(10)
-
+        self.response.write('<table>')
         for item in items:
-            if item.author:
-                self.response.write(
-                        '<b>%s</b> wrote:' % item.author.nickname())
-            else:
-                self.response.write('An anonymous person wrote:')
-            self.response.write('<blockquote>%s</blockquote>' %
+            self.response.write('<tr>')
+#            if item.author:
+#                self.response.write(
+#                        '<b>%s</b> wrote:' % item.author.nickname())
+#            else:
+#                self.response.write('An anonymous person wrote:')
+            self.response.write('<td>%s</td>' %
 				item.desc)
                                 #cgi.escape(item.desc))
-
+            self.response.write('</tr>')
+        self.response.write('</table>')
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
